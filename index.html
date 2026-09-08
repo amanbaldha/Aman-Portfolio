@@ -7,10 +7,9 @@
   <meta name="description" content="Aman Baldha — Android Developer specializing in Kotlin, Jetpack Compose, AI integration, and cross-platform development.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
 
@@ -28,7 +27,7 @@
     <div class="nav-cta">
       <a href="mailto:amanbaldha01@gmail.com" class="btn-outline">Hire Me</a>
     </div>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -45,20 +44,8 @@
     </ul>
   </div>
 
-  <!-- Film grain overlay -->
-  <div class="grain"></div>
-
-  <!-- Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-follower" id="cursorFollower"></div>
-
   <!-- ===== HERO SECTION ===== -->
   <section id="hero" class="section hero-section">
-    <div class="hero-bg">
-      <img src="hero_bg.png" alt="background" class="hero-bg-img">
-      <div class="hero-overlay"></div>
-    </div>
-
     <div class="hero-content">
       <div class="hero-label reveal">
         <span class="label-line"></span>
@@ -522,11 +509,11 @@
           <form class="contact-form" id="contactForm">
             <div class="form-group">
               <label for="name">Your Name</label>
-              <input type="text" id="name" name="from_name" placeholder="John Doe" autocomplete="off">
+              <input type="text" id="name" name="from_name" autocomplete="name">
             </div>
             <div class="form-group">
               <label for="email">Your Email</label>
-              <input type="email" id="email" name="from_email" placeholder="john@example.com" autocomplete="off">
+              <input type="email" id="email" name="from_email" autocomplete="email">
             </div>
             <div class="form-group">
               <label for="message">Message</label>
@@ -547,7 +534,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">AB<span class="dot">.</span></div>
-      <p class="footer-text">Crafted with passion · © 2025 Aman Baldha</p>
+      <p class="footer-text">Crafted with care · © 2026 Aman Baldha</p>
       <div class="footer-links">
         <a href="https://linkedin.com/in/amanbaldha" target="_blank">LinkedIn</a>
         <a href="https://github.com/amanbaldha" target="_blank">GitHub</a>
@@ -556,6 +543,5 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
 </body>
 </html>

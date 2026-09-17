@@ -339,8 +339,6 @@ img { max-width: 100%; display: block; }
   content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%;
   right: -140px; top: -160px; background: rgba(255, 255, 255, .12); filter: blur(10px);
 }
-.contact-section .section-num { background: rgba(255, 255, 255, .18); color: #fff; }
-.contact-section .section-title { color: #fff; }
 .contact-grid { position: relative; display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(40px, 7vw, 90px); }
 .contact-lead { margin: 0 0 26px; color: rgba(255, 255, 255, .85); font-size: 1.08rem; }
 .contact-info { display: grid; gap: 12px; }

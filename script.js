@@ -1,6 +1,8 @@
 (() => {
   'use strict';
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -28,7 +30,16 @@
   }, { rootMargin: '-35% 0px -55% 0px' });
   sections.forEach((section) => navObserver.observe(section));
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth > 520) {
+  // ---------- Scroll reveal (with a gentle stagger for elements that share a parent) ----------
+  const revealGroups = new Map();
+  document.querySelectorAll('.reveal').forEach((el) => {
+    const parent = el.parentElement;
+    const index = revealGroups.get(parent) ?? 0;
+    revealGroups.set(parent, index + 1);
+    el.style.transitionDelay = reducedMotion ? '0ms' : `${Math.min(index, 5) * 70}ms`;
+  });
+
+  if (!reducedMotion && window.innerWidth > 520) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -42,6 +53,61 @@
     document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
   }
 
+  // ---------- Animated stat counters ----------
+  const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+  const animateCount = (el) => {
+    const target = parseFloat(el.dataset.countTo || '0');
+    const decimals = el.dataset.countTo?.includes('.') ? 1 : 0;
+    const duration = 1200;
+    const start = performance.now();
+
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const value = target * easeOutExpo(progress);
+      el.textContent = value.toFixed(decimals);
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals);
+    };
+
+    if (reducedMotion) {
+      el.textContent = target.toFixed(decimals);
+    } else {
+      requestAnimationFrame(tick);
+    }
+  };
+
+  const countEls = document.querySelectorAll('[data-count-to]');
+  if (countEls.length) {
+    const countObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .4 });
+    countEls.forEach((el) => countObserver.observe(el));
+  }
+
+  // ---------- Subtle hero parallax ----------
+  if (!reducedMotion && window.innerWidth > 800) {
+    const orbs = document.querySelectorAll('.orb');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        orbs.forEach((orb, i) => {
+          orb.style.transform = `translateY(${y * (0.06 + i * 0.03)}px)`;
+        });
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  // ---------- Contact form (EmailJS) ----------
   const contactForm = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
   const EMAILJS_PUBLIC_KEY = '9EGX5N_lzjY18OTOM';
@@ -89,7 +155,7 @@
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = message;
-    Object.assign(toast.style, { position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: '20', padding: '11px 16px', borderRadius: '8px', color: '#fff', background: type === 'success' ? '#18733c' : '#a53030', fontSize: '.85rem', boxShadow: '0 8px 24px rgba(0,0,0,.2)' });
+    Object.assign(toast.style, { position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: '20', padding: '11px 16px', borderRadius: '100px', color: '#fff', background: type === 'success' ? '#059669' : '#dc2626', fontSize: '.85rem', boxShadow: '0 8px 24px rgba(0,0,0,.2)' });
     document.body.append(toast);
     setTimeout(() => toast.remove(), 3800);
   }
